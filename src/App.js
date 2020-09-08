@@ -1,28 +1,42 @@
+/* eslint-disable react/jsx-curly-newline */
+/* eslint-disable jsx-quotes */
 /* eslint-disable quotes */
 /* eslint-disable semi */
-import React from "react";
-import { ListOfCategories } from "./components/ListOfCategories";
-import { ListOfPhotoCards } from "./containers/ListOfPhotoCards";
+import React, { useContext } from "react";
 import { GlobalStyle } from "./styles/GlobalStyles";
 import { Logo } from "./components/Logo";
-import { PhotoCardWithQuery } from "./containers/PhotoCardWithQuery";
+import { NavBar } from "./components/NavBar";
+
+import { Home } from "./pages/Home";
+import { Detail } from "./pages/Detail";
+import { Favs } from "./pages/Favs";
+import { User } from "./pages/User";
+import { NotRegisteredUser } from "./pages/NotRegisteredUser";
+import { NotFound } from "./pages/NotFound";
+
+import { Router, Redirect } from "@reach/router";
+import { Context } from "./Context";
 
 export const App = () => {
-  const urlParams = new window.URLSearchParams(window.location.search);
-  const detailId = urlParams.get("detail");
-  console.log(detailId);
+  const { isAuth } = useContext(Context);
   return (
     <>
       <GlobalStyle />
       <Logo />
-      {detailId ? (
-        <PhotoCardWithQuery id={detailId} />
-      ) : (
-        <>
-          <ListOfCategories />
-          <ListOfPhotoCards categoryId={1} />
-        </>
-      )}
+      <Router>
+        <NotFound default />
+        <Home path="/" />
+        <Home path="/pet/:categoryID" />
+        <Detail path="/detail/:detailId" />
+        {!isAuth && <NotRegisteredUser path="/login" />}
+        {!isAuth && <Redirect from="/favs" to="/login" />}
+        {!isAuth && <Redirect from="/user" to="/login" />}
+        {isAuth && <Redirect from="/login" to="/" />}
+
+        <Favs path="/favs" />
+        <User path="/user" />
+      </Router>
+      <NavBar />
     </>
   );
 };
