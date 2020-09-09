@@ -1,7 +1,9 @@
+/* eslint-disable comma-dangle */
 /* eslint-disable quotes */
 /* eslint-disable semi */
 import React from "react";
 import { Grid, Link, Image } from "./styles";
+import PropTypes from "prop-types";
 
 export const ListOfFavs = ({ favs = [] }) => {
   return (
@@ -13,4 +15,13 @@ export const ListOfFavs = ({ favs = [] }) => {
       ))}
     </Grid>
   );
+};
+
+ListOfFavs.propTypes = {
+  favs: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      src: PropTypes.string.isRequired,
+    })
+  ),
 };
