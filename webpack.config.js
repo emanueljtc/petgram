@@ -35,6 +35,13 @@ module.exports = {
           options: {
             cacheName: 'images'
           }
+        },
+        {
+          urlPattern: new RegExp('https://petgram.emanueljtc.vercel.app/'),
+          handler: 'NetworkFirst',
+          options: {
+            cacheName: 'api'
+          }
         }
       ]
     })
